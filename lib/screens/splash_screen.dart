@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
 
     return Container(
       color: Colors.white,
-      child: Image.asset('assets/images/logo_tropbio.png'),
+      child: Image.asset('assets/images/logo_tropibio.png'),
     );
   }
 }
