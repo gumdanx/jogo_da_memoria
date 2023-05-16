@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+// Versão com animação
 import 'package:jogo_da_memoria/models/bird_species.dart';
 
-class Cards extends StatelessWidget {
+class Cards extends StatefulWidget {
   final BirdSpecies birdSpecies;
   final bool isFlipped;
   final VoidCallback onTap;
 
-  const Cards({
+  Cards({
     Key? key,
     required this.birdSpecies,
     required this.isFlipped,
@@ -14,79 +15,103 @@ class Cards extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _CardsState createState() => _CardsState();
+}
+
+class _CardsState extends State<Cards> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _frontRotation;
+  late Animation<double> _backRotation;
+  bool _isFrontVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+    _frontRotation =
+        Tween<double>(begin: 0, end: -1).animate(_animationController);
+    _backRotation =
+        Tween<double>(begin: 1, end: 0).animate(_animationController);
+    flipCard(isFlipped: widget.isFlipped);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void flipCard({required bool isFlipped}) {
+    if (isFlipped) {
+      if (_animationController.status != AnimationStatus.completed) {
+        _animationController.forward();
+      }
+    } else {
+      if (_animationController.status != AnimationStatus.dismissed) {
+        _animationController.reverse();
+      }
+    }
+    _isFrontVisible = !isFlipped;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 100,
-        height: 100,
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade400,
-              spreadRadius: 1,
-              blurRadius: 3,
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Colors.blue, Colors.green],
-                  ),
+      onTap: widget.onTap,
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (BuildContext context, Widget? child) {
+          final double rotation =
+              _isFrontVisible ? _frontRotation.value : _backRotation.value;
+          return Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(rotation * 0.5 * 3.1415926535897932),
+            alignment: Alignment.center,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blue, Colors.green],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                borderRadius: BorderRadius.circular(20.0),
               ),
-            ),
-            AnimatedSwitcher(
-              duration: Duration(milliseconds: 500),
-              child: isFlipped
-                  ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Image.asset(
-                      birdSpecies.image,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      birdSpecies.name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
+              child: _isFrontVisible
+                  ? Center(
+                      child: Text(
+                        '🐦',
+                        style: TextStyle(
+                          fontSize: 64,
+                          color: Colors.white,
+                        ),
                       ),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          widget.birdSpecies.image,
+                          fit: BoxFit.contain,
+                        ),
+                        Text(
+                          widget.birdSpecies.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              )
-                  : Container(
-                key: UniqueKey(),
-                child: Center(
-                  child: Text(
-                    'FLIP',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
