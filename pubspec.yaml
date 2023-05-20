@@ -9,9 +9,10 @@ environment:
   sdk: '>=2.19.6 <3.0.0'
 
 dependencies:
-  flutter_screenutil: ^5.0.0+2
   flutter:
     sdk: flutter
+# AspectRatio and ScreenSize
+  flutter_screenutil: ^5.0.0+2
 
 dev_dependencies:
   flutter_test:

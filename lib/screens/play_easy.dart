@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_da_memoria/models/cards.dart';
 import 'package:jogo_da_memoria/models/bird_species.dart';
-import 'package:jogo_da_memoria/globals.dart' as globals;
+import 'package:jogo_da_memoria/utils/globals.dart' as globals;
 
 class PlayEasy extends StatefulWidget {
   @override
@@ -9,11 +9,11 @@ class PlayEasy extends StatefulWidget {
 }
 
 class _PlayEasyState extends State<PlayEasy> {
-  late List<BirdSpecies> gameBirds;
-  late List<bool> isFlipped;
-  int? firstCardIndex;
-  int? secondCardIndex;
-  int numMatches = 0;
+  late List<BirdSpecies> gameBirds; // The list of bird species in the game
+  late List<bool> isFlipped; // The state of each card (flipped or not)
+  int? firstCardIndex; // The index of the first selected card
+  int? secondCardIndex; // The index of the second selected card
+  int numMatches = 0; // The number of matches found
 
   @override
   void initState() {
@@ -22,11 +22,12 @@ class _PlayEasyState extends State<PlayEasy> {
   }
 
   void startGame() {
-    gameBirds = [];
-    isFlipped = List<bool>.filled(6, true);
-    firstCardIndex = null;
-    secondCardIndex = null;
-    numMatches = 0;
+    gameBirds = []; // Initialize the list of game cards
+    isFlipped = List<bool>.filled(
+        6, true); // Initialize the state of each card as flipped
+    firstCardIndex = null; // No cards are selected at start
+    secondCardIndex = null; // No cards are selected at start
+    numMatches = 0; // No matches are found at start
 
     var shuffledBirds = globals.birdSpeciesList..shuffle();
     shuffledBirds.sort((a, b) => a.numCorrect.compareTo(b.numCorrect));
@@ -35,16 +36,16 @@ class _PlayEasyState extends State<PlayEasy> {
     gameBirds.shuffle();
   }
 
-  void flipCard(int index) {
+  Future<void> flipCard(int index) async {
     if (firstCardIndex == null) {
       firstCardIndex = index;
     } else if (firstCardIndex != index) {
       secondCardIndex = index;
       if (gameBirds[firstCardIndex!].name == gameBirds[secondCardIndex!].name) {
         gameBirds[firstCardIndex!].numCorrect++;
-        gameBirds[secondCardIndex!].numCorrect++;
         numMatches++;
         if (numMatches == 3) {
+          await Future.delayed(const Duration(seconds: 1));
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -66,10 +67,15 @@ class _PlayEasyState extends State<PlayEasy> {
         }
         firstCardIndex = null;
         secondCardIndex = null;
+      } else {
+        await Future.delayed(const Duration(seconds: 1));
+        setState(() {
+          isFlipped[firstCardIndex!] = true;
+          isFlipped[secondCardIndex!] = true;
+        });
+        firstCardIndex = null;
+        secondCardIndex = null;
       }
-    } else {
-      firstCardIndex = null;
-      secondCardIndex = null;
     }
     setState(() {
       isFlipped[index] = false;

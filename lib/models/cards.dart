@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 // Versão com animação
 import 'package:jogo_da_memoria/models/bird_species.dart';
@@ -7,7 +9,7 @@ class Cards extends StatefulWidget {
   final bool isFlipped;
   final VoidCallback onTap;
 
-  Cards({
+  const Cards({
     Key? key,
     required this.birdSpecies,
     required this.isFlipped,
@@ -29,7 +31,7 @@ class _CardsState extends State<Cards> with SingleTickerProviderStateMixin {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     _frontRotation =
         Tween<double>(begin: 0, end: -1).animate(_animationController);
@@ -75,7 +77,7 @@ class _CardsState extends State<Cards> with SingleTickerProviderStateMixin {
               width: 300,
               height: 300,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [Colors.blue, Colors.green],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -83,7 +85,7 @@ class _CardsState extends State<Cards> with SingleTickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: _isFrontVisible
-                  ? Center(
+                  ? const Center(
                       child: Text(
                         '🐦',
                         style: TextStyle(
@@ -102,7 +104,7 @@ class _CardsState extends State<Cards> with SingleTickerProviderStateMixin {
                         Text(
                           widget.birdSpecies.name,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24,
                             color: Colors.black,
                           ),

@@ -2,26 +2,26 @@ import '../models/bird_species.dart';
 
 List<BirdSpecies> birdSpeciesList = [
   BirdSpecies(
-      name: 'alcatraz', image: 'assets/images/alcatraz.png', numCorrect: 0),
+      name: 'Alcatraz', image: 'assets/images/alcatraz.png', numCorrect: 0),
   BirdSpecies(
-      name: 'cagarra', image: 'assets/images/cagarra.png', numCorrect: 0),
+      name: 'Cagarra', image: 'assets/images/cagarra.png', numCorrect: 0),
   BirdSpecies(
-      name: 'fragata', image: 'assets/images/fragata.png', numCorrect: 0),
-  BirdSpecies(name: 'gongon', image: 'assets/images/gongon.png', numCorrect: 0),
+      name: 'Fragata', image: 'assets/images/fragata.png', numCorrect: 0),
+  BirdSpecies(name: 'Gongon', image: 'assets/images/gongon.png', numCorrect: 0),
   BirdSpecies(
-      name: 'joao_preto', image: 'assets/images/joao_preto.png', numCorrect: 0),
+      name: 'João Preto', image: 'assets/images/joao_preto.png', numCorrect: 0),
   BirdSpecies(
-      name: 'pedreirinho',
+      name: 'Pedreirinho',
       image: 'assets/images/pedreirinho.png',
       numCorrect: 0),
   BirdSpecies(
-      name: 'pedreiro', image: 'assets/images/pedreiro.png', numCorrect: 0),
+      name: 'Pedreiro', image: 'assets/images/pedreiro.png', numCorrect: 0),
   BirdSpecies(
-      name: 'pedreiro_azul',
+      name: 'Pedreiro Azul',
       image: 'assets/images/pedreiro_azul.png',
       numCorrect: 0),
   BirdSpecies(
-      name: 'rabo_de_junco',
+      name: 'Rabo de Junco',
       image: 'assets/images/rabo_de_junco.png',
       numCorrect: 0),
 ];
