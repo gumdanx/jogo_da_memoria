@@ -3,7 +3,41 @@ import 'package:jogo_da_memoria/utils/globals.dart';
 import 'package:jogo_da_memoria/models/bird_species.dart';
 
 void main() {
-  runApp(MaterialApp(home: MemoryGame()));
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  Future<void> loadApp() async {
+    await Future.delayed(const Duration(seconds: 3));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: loadApp(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(home: MemoryGame());
+        } else {
+          return MaterialApp(home: SplashScreen());
+        }
+      },
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          tropibio,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
 }
 
 class MemoryGame extends StatefulWidget {
@@ -26,6 +60,19 @@ class _MemoryGameState extends State<MemoryGame> {
     data = data + data;
     data.shuffle();
     opened = List<bool>.filled(data.length, true);
+  }
+
+  void resetGame() {
+    setState(() {
+      data.clear();
+      var shuffledBirds = birdSpeciesList..shuffle();
+      data.addAll(shuffledBirds.take(3));
+      data = data + data;
+      data.shuffle();
+      opened = List<bool>.filled(data.length, true);
+      firstIndex = null;
+      secondIndex = null;
+    });
   }
 
   void openCard(int index) {
@@ -53,6 +100,26 @@ class _MemoryGameState extends State<MemoryGame> {
         firstIndex = null;
         secondIndex = null;
       }
+    }
+    if (firstIndex == null && secondIndex == null && !opened.contains(true)) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Parabéns!'),
+            content: Text('Você concluiu o jogo!'),
+            actions: [
+              TextButton(
+                child: Text('Jogar novamente'),
+                onPressed: () {
+                  resetGame();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -90,14 +157,14 @@ class _MemoryGameState extends State<MemoryGame> {
                             data[index].image,
                             fit: BoxFit.contain,
                           ),
-                          Text(
+                          /* Text(
                             data[index].name,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 32,
                               color: Colors.black,
                             ),
-                          ),
+                          ), */
                         ],
                       ),
               ),

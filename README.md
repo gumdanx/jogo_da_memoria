@@ -1,16 +1,52 @@
-# jogo_da_memoria
+# Jogo de Memória de Aves Marinhas
 
-A new Flutter project.
+Este é um jogo de memória desenvolvido pelo [Projeto Vitó](https://projectovito.org/) e o [Tropibio](https://cibio-tropibio.pt/en/) para aproximar as crianças das aves marinhas de Cabo Verde e apresentar algumas curiosidades sobre elas.
 
-## Getting Started
+## Descrição
 
-This project is a starting point for a Flutter application.
+O jogo de memória de aves marinhas é uma aplicação móvel desenvolvida em Flutter. Ele permite que os usuários testem suas habilidades de memória enquanto aprendem sobre diferentes espécies de aves marinhas. O jogo consiste em encontrar pares de cartas com imagens das aves, e quando um par é encontrado, informações sobre a espécie são exibidas em tela cheia.
 
-A few resources to get you started if this is your first Flutter project:
+## Recursos
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Splash screen com a logo do jogo
+- Tela de menu principal com opções para jogar e ver o ranking
+- Modos de jogo: fácil, médio e difícil
+- Ranking do usuário com as espécies de aves registradas e número de acertos
+- Tela de opções para configurar o jogo
+- Efeitos visuais e animações ao selecionar as cartas do jogo
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tecnologias utilizadas
+
+- Flutter: framework de desenvolvimento multiplataforma
+- Dart: linguagem de programação para Flutter
+- Hive: biblioteca de banco de dados leve para armazenar o ranking do usuário localmente
+- Outras bibliotecas e widgets do Flutter
+
+## Instalação
+
+1. Certifique-se de ter o Flutter instalado em seu ambiente de desenvolvimento. Você pode encontrar as instruções de instalação no site oficial do Flutter: [https://flutter.dev](https://flutter.dev)
+
+2. Clone este repositório:
+
+   ```bash
+   git clone https://github.com/gumdanx/jogo_da_memoria.git
+   ```
+
+3. Navegue até o diretório do projeto:
+
+   ```bash
+   cd jogo_da_memoria
+   ```
+
+4. Execute o aplicativo:
+
+   ```bash
+   flutter run
+   ```
+
+## Contribuição
+Se você deseja contribuir com o projeto, sinta-se à vontade para fazer um fork e enviar suas melhorias por meio de pull requests. Serão bem-vindas quaisquer sugestões, correções de bugs e implementações de novos recursos.
+
+## Autores
+[GDX](https://github.com/gumdanx)
+[Javier Martínez](https://github.com/JMartinezArribas)

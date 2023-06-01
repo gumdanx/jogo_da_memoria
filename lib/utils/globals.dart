@@ -1,5 +1,7 @@
 import '../models/bird_species.dart';
 
+const tropibio = 'assets/images/logo_tropibio.png';
+
 List<BirdSpecies> birdSpeciesList = [
   BirdSpecies(
       name: 'Alcatraz', image: 'assets/images/alcatraz.png', numCorrect: 0),
