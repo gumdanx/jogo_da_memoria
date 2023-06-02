@@ -1,6 +1,6 @@
 # Jogo de Memória de Aves Marinhas
 
-Este é um jogo de memória desenvolvido pelo [Projeto Vitó](https://projectovito.org/) e o [Tropibio](https://cibio-tropibio.pt/en/) para aproximar as crianças das aves marinhas de Cabo Verde e apresentar algumas curiosidades sobre elas.
+Este é um jogo de memória desenvolvido pelo [Projecto Vitó](https://projectovito.org/) e o [Tropibio](https://cibio-tropibio.pt/en/) para aproximar as crianças das aves marinhas de Cabo Verde e apresentar algumas curiosidades sobre elas.
 
 ## Descrição
 
