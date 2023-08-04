@@ -1,6 +1,8 @@
 import '../models/bird_species.dart';
 
 const tropibio = 'assets/images/logo_tropibio.png';
+const logos = 'assets/images/logos.png';
+const vito = 'assets/images/logo_vito.png';
 
 List<BirdSpecies> birdSpeciesList = [
   BirdSpecies(
