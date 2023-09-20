@@ -17,7 +17,7 @@ class _MemoryGameState extends State<MediumGame> {
   @override
   void initState() {
     super.initState();
-    var shuffledBirds = birdSpeciesList..shuffle();
+    var shuffledBirds = mediumBirdSpeciesList..shuffle();
     data.addAll(shuffledBirds.take(6));
     data = data + List.from(data);
     data.shuffle();
@@ -27,7 +27,7 @@ class _MemoryGameState extends State<MediumGame> {
   void resetGame() {
     setState(() {
       data.clear();
-      var shuffledBirds = birdSpeciesList..shuffle();
+      var shuffledBirds = mediumBirdSpeciesList..shuffle();
       data.addAll(shuffledBirds.take(6));
       data = data + List.from(data);
       data.shuffle();
@@ -88,14 +88,26 @@ class _MemoryGameState extends State<MediumGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Jogo da Memoria")),
+      appBar: AppBar(
+        title: Text('Médio'),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.green],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: GridView.builder(
         padding: EdgeInsets.all(20.0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, // Agora temos 3 colunas
           childAspectRatio: 1.0,
-          mainAxisSpacing: 20.0,
-          crossAxisSpacing: 20.0,
+          mainAxisSpacing: 40.0,
+          crossAxisSpacing: 7.0,
         ),
         itemCount: data.length,
         itemBuilder: (context, index) {
@@ -105,12 +117,16 @@ class _MemoryGameState extends State<MediumGame> {
               color: opened[index] ? Colors.blue : Colors.white,
               child: Center(
                 child: opened[index]
-                    ? Text(
+                    ? /*Text(
                   '🐦',
                   style: TextStyle(
                     fontSize: 64,
                     color: Colors.white,
                   ),
+                )*/
+                Image.asset(
+                    vito,
+                    fit: BoxFit.cover
                 )
                     : Column(
                   mainAxisAlignment: MainAxisAlignment.center,

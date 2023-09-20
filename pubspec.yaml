@@ -25,4 +25,7 @@ flutter:
   uses-material-design: true
   assets:
   - assets/images/
-  - assets/images/logo_tropibio.png
+  - assets/images/easy/
+  - assets/images/medium/
+  - assets/images/head/
+  - assets/images/body/

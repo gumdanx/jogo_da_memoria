@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_da_memoria/screens/logo_screen.dart';
+import 'package:jogo_da_memoria/screens/hard_game.dart';
 import 'package:jogo_da_memoria/screens/medium_game.dart';
 import 'package:jogo_da_memoria/screens/easy_game.dart';
+import 'package:jogo_da_memoria/screens/ranking.dart';
+
+import '../utils/globals.dart';
 
 class MainMenu extends StatelessWidget {
   @override
@@ -40,6 +44,7 @@ class MainMenu extends StatelessWidget {
                       },
                       label: Text("Fácil"),
                     ),
+                    Padding(padding: const EdgeInsets.only(top: 20.0),),
                     FloatingActionButton.extended(
                       onPressed: () {
                         Navigator.push(
@@ -49,24 +54,27 @@ class MainMenu extends StatelessWidget {
                       },
                       label: Text("Médio"),
                     ),
+                    Padding(padding: const EdgeInsets.only(top: 20.0),),
                     FloatingActionButton.extended(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EasyGame()),
+                          MaterialPageRoute(builder: (context) => HardGame()),
                         );
                       },
                       label: Text("Difícil"),
                     ),
+                    Padding(padding: const EdgeInsets.only(top: 20.0),),
                     FloatingActionButton.extended(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EasyGame()),
+                          MaterialPageRoute(builder: (context) => RankingScreen()),
                         );
                       },
-                      label: Text("Opções"),
+                      label: Text("Pontuação"),
                     ),
+                    Padding(padding: const EdgeInsets.only(top: 20.0),),
                     FloatingActionButton.extended(
                       onPressed: () {
                         Navigator.push(
@@ -82,11 +90,7 @@ class MainMenu extends StatelessWidget {
               ),
               Expanded(
                 child: Center(
-                  child: Text(
-                    "Jogo desenvolvido pelo Projecto Vitó e o Tropibio para aproximar as crianças das aves marinhas de Cabo Verde 🇨🇻 e apresentar algumas curiosidades sobre elas",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.blue),
-                  ),
+                  child: Image.asset(editorial),
                 ),
               ),
             ],

@@ -17,8 +17,8 @@ class _MemoryGameState extends State<EasyGame> {
   @override
   void initState() {
     super.initState();
-    var shuffledBirds = birdSpeciesList..shuffle();
-    data.addAll(shuffledBirds.take(3));
+    var shuffledBirds = easyBirdSpeciesList..shuffle();
+    data.addAll(shuffledBirds.take(4));
     data = data + data;
     data.shuffle();
     opened = List<bool>.filled(data.length, true);
@@ -27,8 +27,8 @@ class _MemoryGameState extends State<EasyGame> {
   void resetGame() {
     setState(() {
       data.clear();
-      var shuffledBirds = birdSpeciesList..shuffle();
-      data.addAll(shuffledBirds.take(3));
+      var shuffledBirds = easyBirdSpeciesList..shuffle();
+      data.addAll(shuffledBirds.take(4));
       data = data + data;
       data.shuffle();
       opened = List<bool>.filled(data.length, true);
