@@ -48,5 +48,5 @@ O jogo de memória de aves marinhas é uma aplicação móvel desenvolvida em Fl
 Se você deseja contribuir com o projeto, sinta-se à vontade para fazer um fork e enviar suas melhorias por meio de pull requests. Serão bem-vindas quaisquer sugestões, correções de bugs e implementações de novos recursos.
 
 ## Autores
-[GDX](https://github.com/gumdanx)
+[GDX](https://github.com/gumdanx) 
 [Javier Martínez](https://github.com/JMartinezArribas)
