@@ -102,11 +102,11 @@ class _MemoryGameState extends State<MediumGame> {
         ),
       ),
       body: GridView.builder(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 100.0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, // Agora temos 3 colunas
           childAspectRatio: 1.0,
-          mainAxisSpacing: 40.0,
+          mainAxisSpacing: 7.0,
           crossAxisSpacing: 7.0,
         ),
         itemCount: data.length,
@@ -114,7 +114,7 @@ class _MemoryGameState extends State<MediumGame> {
           return GestureDetector(
             onTap: () => openCard(index),
             child: Container(
-              color: opened[index] ? Colors.blue : Colors.white,
+              color: opened[index] ? Color(0xFFBBD2EC) : Colors.white,
               child: Center(
                 child: opened[index]
                     ? /*Text(

@@ -1,62 +1,24 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:jogo_da_memoria/utils/globals.dart';
 import 'package:jogo_da_memoria/models/bird_species.dart';
 
 class HardGame extends StatefulWidget {
   @override
-  _HardGameState createState() => _HardGameState();
+  _MemoryGameState createState() => _MemoryGameState();
 }
 
-class _HardGameState extends State<HardGame> {
+class _MemoryGameState extends State<HardGame> {
   List<BirdSpecies> data = [];
   List<bool> opened = [];
-  String selectedBirdName = '';
-  List<String> guessedLetters = [];
-  List<String> availableLetters = [];
+
   int? firstIndex;
   int? secondIndex;
-
-  // Função para encontrar o caminho da imagem usando o nome
-  String findImagePathByName(String name, List<BirdSpecies> list) {
-    for (BirdSpecies species in list) {
-      if (species.name == name) {
-        return species.image;
-      }
-    }
-    return '';
-  }
-
-  void setupGameForSelectedBird(String birdName) {
-    selectedBirdName = birdName;
-    guessedLetters = List.filled(birdName.length, '🐦');
-
-    // Adicionando algumas letras distratoras - ajuste conforme necessário
-    availableLetters = birdName.split('') + ['a', 'b', 'c', 'd'];
-    availableLetters.shuffle();
-  }
-
-  void selectLetter(int index) {
-    if(!guessedLetters.contains(availableLetters[index])) {
-      int letterIndex = selectedBirdName.indexOf(availableLetters[index]);
-      guessedLetters[letterIndex] = availableLetters[index];
-      availableLetters[index] = '';  // Marcar a letra como usada
-
-      if(!guessedLetters.contains('🐦')) {
-        // Todas as letras foram adivinhadas
-        print('Parabéns, você adivinhou a palavra!');
-      }
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-
-    var birdList = (Random().nextBool()) ? headsBirdSpeciesList : bodysBirdSpeciesList;
-
-    var shuffledBirds = birdList..shuffle();
-    data.addAll(shuffledBirds.take(4)); // Aumentado para 9 para tornar o jogo mais difícil
+    var shuffledBirds = mediumBirdSpeciesList..shuffle();
+    data.addAll(shuffledBirds.take(9));
     data = data + List.from(data);
     data.shuffle();
     opened = List<bool>.filled(data.length, true);
@@ -65,11 +27,8 @@ class _HardGameState extends State<HardGame> {
   void resetGame() {
     setState(() {
       data.clear();
-
-      var birdList = (Random().nextBool()) ? headsBirdSpeciesList : bodysBirdSpeciesList;
-
-      var shuffledBirds = birdList..shuffle();
-      data.addAll(shuffledBirds.take(4)); // Aumentado para 9 para tornar o jogo mais difícil
+      var shuffledBirds = mediumBirdSpeciesList..shuffle();
+      data.addAll(shuffledBirds.take(9));
       data = data + List.from(data);
       data.shuffle();
       opened = List<bool>.filled(data.length, true);
@@ -100,67 +59,6 @@ class _HardGameState extends State<HardGame> {
           });
         });
       } else {
-        // Um par foi encontrado
-        String birdName = data[firstIndex!].name; // Ajuste para obter o nome correto do pássaro
-        setupGameForSelectedBird(birdName);
-
-        // Encontrando os caminhos corretos para as imagens
-        String headImagePath = findImagePathByName(birdName, headsBirdSpeciesList);
-        String bodyImagePath = findImagePathByName(birdName, bodysBirdSpeciesList);
-
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Column(
-              children: [
-                Padding(padding: const EdgeInsets.only(top: 20.0),),
-                // Linha 1: Fotos
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 180.0,  // Define a largura desejada aqui
-                      height: 180.0, // Define a altura desejada aqui
-                      child: Image.asset(headImagePath, fit: BoxFit.contain),
-                    ),
-                    Container(
-                      width: 180.0,  // Define a largura desejada aqui
-                      height: 180.0, // Define a altura desejada aqui
-                      child: Image.asset(bodyImagePath, fit: BoxFit.contain),
-                    ),
-                  ],
-                ),
-                Padding(padding: const EdgeInsets.only(top: 20.0),),
-                // Linha 2: Emojis de passarinho representando cada letra
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: guessedLetters.map((letter) => Text(letter, style: TextStyle(fontSize:28),)).toList(),
-                ),
-                Padding(padding: const EdgeInsets.only(top: 20.0),),
-                // Linha 3: Letras disponíveis para escolha
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 4.0,
-                  alignment: WrapAlignment.center,
-                  children: availableLetters.asMap().entries.map((entry) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectLetter(entry.key);
-                        });
-                      },
-                      child: Text(
-                        entry.value.toUpperCase(),
-                        style: TextStyle(fontSize: 24.0),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            );
-          },
-        );
-
         firstIndex = null;
         secondIndex = null;
       }
@@ -206,25 +104,29 @@ class _HardGameState extends State<HardGame> {
       body: GridView.builder(
         padding: EdgeInsets.all(20.0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 3, // Agora temos 3 colunas
           childAspectRatio: 1.0,
-          mainAxisSpacing: 20.0,
-          crossAxisSpacing: 20.0,
+          mainAxisSpacing: 7.0,
+          crossAxisSpacing: 7.0,
         ),
         itemCount: data.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => openCard(index),
             child: Container(
-              color: opened[index] ? Colors.blue : Colors.white,
+              color: opened[index] ? Color(0xFFBBD2EC) : Colors.white,
               child: Center(
                 child: opened[index]
-                    ? Text(
+                    ? /*Text(
                   '🐦',
                   style: TextStyle(
                     fontSize: 64,
                     color: Colors.white,
                   ),
+                )*/
+                Image.asset(
+                    vito,
+                    fit: BoxFit.cover
                 )
                     : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
