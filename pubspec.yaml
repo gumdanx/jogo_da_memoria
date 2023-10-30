@@ -16,7 +16,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.0
 
 # The following section is specific to Flutter packages.
@@ -28,3 +28,8 @@ flutter:
   - assets/images/medium/
   - assets/images/head/
   - assets/images/body/
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/jogo_da_memoria.png"
