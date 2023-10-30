@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jogo_da_memoria/utils/globals.dart';
 import 'package:jogo_da_memoria/screens/logo_screen.dart';
-import 'package:jogo_da_memoria/screens/expert_game.dart';
 import 'package:jogo_da_memoria/screens/hard_game.dart';
 import 'package:jogo_da_memoria/screens/medium_game.dart';
 import 'package:jogo_da_memoria/screens/easy_game.dart';
 import 'package:jogo_da_memoria/screens/ranking.dart';
-
-import '../utils/globals.dart';
 
 class MainMenu extends StatelessWidget {
   @override
@@ -37,6 +35,7 @@ class MainMenu extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
+                    Padding(padding: const EdgeInsets.only(top: 20.0),),
                     Container(
                       alignment: Alignment.center,
                       width: 200.0,
@@ -78,21 +77,7 @@ class MainMenu extends StatelessWidget {
                         label: Text("Difícil"),
                       ),
                     ),
-                    Padding(padding: const EdgeInsets.only(top: 20.0),),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 200.0,
-                      child: FloatingActionButton.extended(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ExpertGame()),
-                          );
-                        },
-                        label: Text("Expert"),
-                      ),
-                    ),
-                    Padding(padding: const EdgeInsets.only(top: 20.0),),
+                    Padding(padding: const EdgeInsets.only(top: 40.0),),
                     Container(
                       alignment: Alignment.center,
                       width: 200.0,
@@ -104,6 +89,7 @@ class MainMenu extends StatelessWidget {
                           );
                         },
                         label: Text("Pontuação"),
+                        backgroundColor: Colors.green,
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 20.0),),
@@ -121,6 +107,7 @@ class MainMenu extends StatelessWidget {
                         backgroundColor: Colors.green,
                       ),
                     ),
+                    Padding(padding: const EdgeInsets.only(top: 20.0),),
                   ],
                 ),
                 Expanded(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:jogo_da_memoria/utils/globals.dart';
 import 'package:jogo_da_memoria/models/bird_species.dart';
 
@@ -8,6 +9,7 @@ class HardGame extends StatefulWidget {
 }
 
 class _MemoryGameState extends State<HardGame> {
+  List<bool> disabled = [];
   List<BirdSpecies> data = [];
   List<bool> opened = [];
 
@@ -17,27 +19,39 @@ class _MemoryGameState extends State<HardGame> {
   @override
   void initState() {
     super.initState();
-    var shuffledBirds = mediumBirdSpeciesList..shuffle();
+
+    var shuffledBirds = birdSpeciesList..shuffle();
     data.addAll(shuffledBirds.take(9));
+
+    // Sorteia se usará 'image_head' ou 'image_body'
+    bool useHeads = (Random().nextInt(2) == 0); // 50% de chance para cada um
+
+    for (var bird in data) {
+      bird.image = useHeads ? bird.image_head : bird.image_body;
+    }
+
     data = data + List.from(data);
     data.shuffle();
     opened = List<bool>.filled(data.length, true);
+    disabled = List<bool>.filled(data.length, false);
   }
 
   void resetGame() {
     setState(() {
       data.clear();
-      var shuffledBirds = mediumBirdSpeciesList..shuffle();
+      var shuffledBirds = birdSpeciesList..shuffle();
       data.addAll(shuffledBirds.take(9));
       data = data + List.from(data);
       data.shuffle();
       opened = List<bool>.filled(data.length, true);
       firstIndex = null;
       secondIndex = null;
+      disabled = List<bool>.filled(data.length, false);
     });
   }
 
   void openCard(int index) {
+    if (disabled[index]) return;
     if (firstIndex == null) {
       firstIndex = index;
       setState(() {
@@ -59,11 +73,20 @@ class _MemoryGameState extends State<HardGame> {
           });
         });
       } else {
+        data[firstIndex!].incrementCorrect();
+        setState(() {
+          disabled[firstIndex!] = true;
+          disabled[secondIndex!] = true;
+        });
         firstIndex = null;
         secondIndex = null;
       }
     }
     if (firstIndex == null && secondIndex == null && !opened.contains(true)) {
+      for (var bird in data) {
+        saveScore(bird);
+      }
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -91,6 +114,13 @@ class _MemoryGameState extends State<HardGame> {
       appBar: AppBar(
         title: Text('Difícil'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: resetGame,
+            tooltip: "Reiniciar o jogo",
+          )
+        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

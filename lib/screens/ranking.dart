@@ -1,52 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_da_memoria/models/bird_species.dart';
-import 'package:jogo_da_memoria/utils/globals.dart'; // Importe seu arquivo globals.dart
+import 'package:jogo_da_memoria/utils/globals.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RankingScreen extends StatelessWidget {
-  // Cria uma função para calcular o total de numCorrect de todas as listas
-  List<BirdSpecies> calculateTotalScore() {
+class RankingScreen extends StatefulWidget {
+  @override
+  _RankingScreenState createState() => _RankingScreenState();
+}
+
+class _RankingScreenState extends State<RankingScreen> {
+
+  Future<List<BirdSpecies>> calculateTotalScore() async {
     Map<String, BirdSpecies> consolidatedList = {};
 
-    // Soma os numCorrect de todas as listas para cada espécie
-    for (var list in [
-      birdSpeciesList,
-      easyBirdSpeciesList,
-      mediumBirdSpeciesList,
-      headsBirdSpeciesList,
-      bodysBirdSpeciesList,
-    ]) {
-      for (var species in list) {
-        if (!consolidatedList.containsKey(species.name)) {
-          consolidatedList[species.name] = BirdSpecies(
-            name: species.name,
-            image: species.image,
-            numCorrect: species.numCorrect,
-          );
-        } else {
-          consolidatedList[species.name]!.numCorrect += species.numCorrect;
-        }
+    for (var bird in birdSpeciesList) {
+      int? score = await getScore(bird.name);
+      if (score != null) {
+        bird.numCorrect = score;
+      }
+    }
+
+    for (var species in birdSpeciesList) {
+      if (!consolidatedList.containsKey(species.name)) {
+        consolidatedList[species.name] = BirdSpecies(
+          name: species.name,
+          image: species.image,
+          image_easy: species.image_easy,
+          image_body: species.image_body,
+          image_head: species.image_head,
+          image_medium: species.image_medium,
+          numCorrect: species.numCorrect,
+        );
+      } else {
+        consolidatedList[species.name]!.numCorrect += species.numCorrect;
       }
     }
 
     // Atualize a imagem para usar a versão 'head' para todas as espécies
-    for (var headSpecies in headsBirdSpeciesList) {
+    for (var headSpecies in birdSpeciesList) {
       if (consolidatedList.containsKey(headSpecies.name)) {
-        consolidatedList[headSpecies.name]!.image = headSpecies.image;
+        consolidatedList[headSpecies.name]!.image_head = headSpecies.image;
       }
     }
 
-    // Retorna a lista consolidada de espécies
-    return consolidatedList.values.toList();
+    // Retorna a lista consolidada de espécies, ordenada pelo número de acertos
+    var sortedList = consolidatedList.values.toList();
+    sortedList.sort((a, b) => b.numCorrect.compareTo(a.numCorrect)); // Ordena do maior para o menor
+    return sortedList;
+  }
+
+  Future<void> _showDeleteDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Deseja zerar a pontuação?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Não'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Sim'),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                for (var bird in birdSpeciesList) {
+                  await prefs.setInt(bird.name, 0);
+                }
+                Navigator.of(context).pop();
+
+                // Forçando a atualização da tela
+                setState(() {});
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final totalScores = calculateTotalScore();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Pontuação'),
         centerTitle: true,
+        actions: [ // Adicione esta linha
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              _showDeleteDialog(context);
+            },
+          ),
+        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -57,46 +105,61 @@ class RankingScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: totalScores.length,
-        itemBuilder: (context, index) {
-          final species = totalScores[index];
+      body: FutureBuilder<List<BirdSpecies>>(
+        future: calculateTotalScore(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Erro ao carregar as pontuações."));
+            }
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60.0),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                // Ação ao pressionar o botão (se necessário)
-              },
-              child: Row(
-                children: [
-                  ClipOval(
-                    child: Transform.scale(
-                      scale: 1.1,  // ajuste o valor de acordo com o quanto você quer que a imagem ultrapasse o limite
-                      child: Image.asset(
-                        species.image,
-                        width: 100.0,
-                        height: 100.0,
-                        fit: BoxFit.cover,
+            final totalScores = snapshot.data ?? [];
+
+            return ListView.builder(
+              itemCount: totalScores.length,
+              itemBuilder: (context, index) {
+                final species = totalScores[index];
+
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(60.0),
+                        ),
                       ),
                     ),
+                    onPressed: () {
+                      // Ação ao pressionar o botão (se necessário)
+                    },
+                    child: Row(
+                      children: [
+                        ClipOval(
+                          child: Transform.scale(
+                            scale: 1.1,  // ajuste o valor de acordo com o quanto você quer que a imagem ultrapasse o limite
+                            child: Image.asset(
+                              species.image,
+                              width: 70.0,
+                              height: 70.0,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          '${species.name} (${species.numCorrect})',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    '${species.name} (${species.numCorrect})',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          );
+                );
+              },
+            );
+          } else {
+            return Center(child: CircularProgressIndicator()); // Enquanto carrega, mostra um indicador de progresso
+          }
         },
       ),
     );

@@ -8,6 +8,7 @@ class MediumGame extends StatefulWidget {
 }
 
 class _MemoryGameState extends State<MediumGame> {
+  List<bool> disabled = [];
   List<BirdSpecies> data = [];
   List<bool> opened = [];
 
@@ -17,27 +18,30 @@ class _MemoryGameState extends State<MediumGame> {
   @override
   void initState() {
     super.initState();
-    var shuffledBirds = mediumBirdSpeciesList..shuffle();
+    var shuffledBirds = birdSpeciesList..shuffle();
     data.addAll(shuffledBirds.take(6));
     data = data + List.from(data);
     data.shuffle();
     opened = List<bool>.filled(data.length, true);
+    disabled = List<bool>.filled(data.length, false);
   }
 
   void resetGame() {
     setState(() {
       data.clear();
-      var shuffledBirds = mediumBirdSpeciesList..shuffle();
+      var shuffledBirds = birdSpeciesList..shuffle();
       data.addAll(shuffledBirds.take(6));
       data = data + List.from(data);
       data.shuffle();
       opened = List<bool>.filled(data.length, true);
       firstIndex = null;
       secondIndex = null;
+      disabled = List<bool>.filled(data.length, false);
     });
   }
 
   void openCard(int index) {
+    if (disabled[index]) return;
     if (firstIndex == null) {
       firstIndex = index;
       setState(() {
@@ -59,11 +63,20 @@ class _MemoryGameState extends State<MediumGame> {
           });
         });
       } else {
+        data[firstIndex!].incrementCorrect();
+        setState(() {
+          disabled[firstIndex!] = true;
+          disabled[secondIndex!] = true;
+        });
         firstIndex = null;
         secondIndex = null;
       }
     }
     if (firstIndex == null && secondIndex == null && !opened.contains(true)) {
+      for (var bird in data) {
+        saveScore(bird);
+      }
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -91,6 +104,13 @@ class _MemoryGameState extends State<MediumGame> {
       appBar: AppBar(
         title: Text('Médio'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: resetGame,
+            tooltip: "Reiniciar o jogo",
+          )
+        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -132,7 +152,7 @@ class _MemoryGameState extends State<MediumGame> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      data[index].image,
+                      data[index].image_medium,
                       fit: BoxFit.contain,
                     ),
                     /* Text(
