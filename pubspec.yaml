@@ -30,6 +30,6 @@ flutter:
   - assets/images/body/
 
 flutter_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/images/jogo_da_memoria.png"

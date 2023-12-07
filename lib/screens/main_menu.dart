@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_da_memoria/utils/globals.dart';
 import 'package:jogo_da_memoria/screens/logo_screen.dart';
-import 'package:jogo_da_memoria/screens/hard_game.dart';
-import 'package:jogo_da_memoria/screens/medium_game.dart';
-import 'package:jogo_da_memoria/screens/easy_game.dart';
+import 'package:jogo_da_memoria/screens/game.dart';
 import 'package:jogo_da_memoria/screens/ranking.dart';
 
 class MainMenu extends StatelessWidget {
@@ -11,12 +9,15 @@ class MainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('As aves de Cabo Verde 🇨🇻'),
+        title: Text(
+          '🎮 Jogo da Memória 🎮',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.green],
+              colors: [Colors.blue.shade900, Colors.green],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -43,10 +44,16 @@ class MainMenu extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EasyGame()),
+                            MaterialPageRoute(builder: (context) => Game(numberOfSpecies: 4, title: 'Fácil')
+                            ),
                           );
                         },
-                        label: Text("Fácil"),
+                        label: Text(" Fácil "),
+                        foregroundColor: Colors.white, // Cor do texto
+                        backgroundColor: Colors.blue[900], // Cor de fundo
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32), // Ajuste este valor para aumentar o arredondamento
+                        ),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 20.0),),
@@ -57,10 +64,15 @@ class MainMenu extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MediumGame()),
+                            MaterialPageRoute(builder: (context) => Game(numberOfSpecies: 6, title: 'Médio')),
                           );
                         },
-                        label: Text("Médio"),
+                        label: Text(" Médio "),
+                        foregroundColor: Colors.white, // Cor do texto
+                        backgroundColor: Colors.blue[900], // Cor de fundo
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32), // Ajuste este valor para aumentar o arredondamento
+                        ),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 20.0),),
@@ -71,10 +83,15 @@ class MainMenu extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => HardGame()),
+                            MaterialPageRoute(builder: (context) => Game(numberOfSpecies: 9, title: 'Difícil')),
                           );
                         },
-                        label: Text("Difícil"),
+                        label: Text(" Difícil "),
+                        foregroundColor: Colors.white, // Cor do texto
+                        backgroundColor: Colors.blue[900], // Cor de fundo
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32), // Ajuste este valor para aumentar o arredondamento
+                        ),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 40.0),),
@@ -89,7 +106,11 @@ class MainMenu extends StatelessWidget {
                           );
                         },
                         label: Text("Pontuação"),
-                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white, // Cor do texto
+                        backgroundColor: Colors.green, // Cor de fundo
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32), // Ajuste este valor para aumentar o arredondamento
+                        ),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 20.0),),
@@ -104,7 +125,11 @@ class MainMenu extends StatelessWidget {
                           );
                         },
                         label: Text("Realização"),
-                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white, // Cor do texto
+                        backgroundColor: Colors.green, // Cor de fundo
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32), // Ajuste este valor para aumentar o arredondamento
+                        ),
                       ),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 20.0),),

@@ -36,13 +36,6 @@ class _RankingScreenState extends State<RankingScreen> {
       }
     }
 
-    // Atualize a imagem para usar a versão 'head' para todas as espécies
-    for (var headSpecies in birdSpeciesList) {
-      if (consolidatedList.containsKey(headSpecies.name)) {
-        consolidatedList[headSpecies.name]!.image_head = headSpecies.image;
-      }
-    }
-
     // Retorna a lista consolidada de espécies, ordenada pelo número de acertos
     var sortedList = consolidatedList.values.toList();
     sortedList.sort((a, b) => b.numCorrect.compareTo(a.numCorrect)); // Ordena do maior para o menor
@@ -85,7 +78,7 @@ class _RankingScreenState extends State<RankingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pontuação'),
+        title: Text('Pontuação', style: TextStyle(color: Colors.white),),
         centerTitle: true,
         actions: [ // Adicione esta linha
           IconButton(
@@ -95,10 +88,11 @@ class _RankingScreenState extends State<RankingScreen> {
             },
           ),
         ],
+        iconTheme: IconThemeData(color: Colors.white),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.green],
+              colors: [Colors.blue.shade900, Colors.green],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -124,6 +118,7 @@ class _RankingScreenState extends State<RankingScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(60.0),
@@ -139,7 +134,7 @@ class _RankingScreenState extends State<RankingScreen> {
                           child: Transform.scale(
                             scale: 1.1,  // ajuste o valor de acordo com o quanto você quer que a imagem ultrapasse o limite
                             child: Image.asset(
-                              species.image,
+                              species.image_head,
                               width: 70.0,
                               height: 70.0,
                               fit: BoxFit.cover,
@@ -149,7 +144,7 @@ class _RankingScreenState extends State<RankingScreen> {
                         SizedBox(width: 10),
                         Text(
                           '${species.name} (${species.numCorrect})',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ],
                     ),
