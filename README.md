@@ -8,23 +8,23 @@ O jogo de memória de aves marinhas é uma aplicação móvel desenvolvida em Fl
 
 ## Recursos
 
-- Splash screen com a logo do jogo
-- Tela de menu principal com opções para jogar e ver o ranking
-- Modos de jogo: fácil, médio e difícil
-- Ranking do usuário com as espécies de aves registradas e número de acertos
-- Tela de opções para configurar o jogo
-- Efeitos visuais e animações ao selecionar as cartas do jogo
+- Splash screen com a logo do jogo.
+- Tela de menu principal com opções para jogar e ver o ranking.
+- Modos de jogo: fácil, médio e difícil.
+- Ranking do usuário com as espécies de aves registradas e número de acertos.
+- Tela de opções para configurar o jogo.
+- Efeitos visuais e animações ao selecionar as cartas do jogo.
 
-## Tecnologias utilizadas
+## Tecnologias Utilizadas
 
-- Flutter: framework de desenvolvimento multiplataforma
-- Dart: linguagem de programação para Flutter
-- Hive: biblioteca de banco de dados leve para armazenar o ranking do usuário localmente
-- Outras bibliotecas e widgets do Flutter
+- **Flutter**: Framework de desenvolvimento multiplataforma.
+- **Dart**: Linguagem de programação para Flutter.
+- **Shared Preferences**: Biblioteca para armazenamento de dados simples.
+- Outras bibliotecas e widgets do Flutter.
 
 ## Instalação
 
-1. Certifique-se de ter o Flutter instalado em seu ambiente de desenvolvimento. Você pode encontrar as instruções de instalação no site oficial do Flutter: [https://flutter.dev](https://flutter.dev)
+1. Certifique-se de ter o Flutter instalado em seu ambiente de desenvolvimento. Instruções de instalação estão disponíveis no site oficial do Flutter: [https://flutter.dev](https://flutter.dev)
 
 2. Clone este repositório:
 
@@ -45,8 +45,10 @@ O jogo de memória de aves marinhas é uma aplicação móvel desenvolvida em Fl
    ```
 
 ## Contribuição
-Se você deseja contribuir com o projeto, sinta-se à vontade para fazer um fork e enviar suas melhorias por meio de pull requests. Serão bem-vindas quaisquer sugestões, correções de bugs e implementações de novos recursos.
+
+Se desejar contribuir com o projeto, sinta-se à vontade para fazer um fork e enviar suas melhorias por meio de pull requests. Quaisquer sugestões, correções de bugs e implementações de novos recursos são bem-vindas.
 
 ## Autores
-[GDX](https://github.com/gumdanx) 
-[Javier Martínez](https://github.com/JMartinezArribas)
+
+- [GDX](https://github.com/gumdanx)
+- [Javier Martínez](https://github.com/JMartinezArribas)
