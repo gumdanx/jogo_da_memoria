@@ -1,5 +1,5 @@
 name: jogo_da_memoria
-description: A new Flutter project.
+description: Um jogo de memória interativo sobre aves marinhas.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
