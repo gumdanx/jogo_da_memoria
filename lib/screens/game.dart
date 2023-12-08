@@ -23,7 +23,7 @@ class _GameState extends State<Game> {
   int? secondIndex;
   Timer? gameTimer;
   GameState gameState = GameState.paused; 
-  Duration timeLeft = Duration(minutes: 2);
+  Duration timeLeft = Duration(minutes: 0);
   bool showingInitialCards = true;
 
   @override
@@ -36,6 +36,7 @@ class _GameState extends State<Game> {
 
   void initializeGame() {
     bool useHeads = false;
+    timeLeft = Duration(seconds: 120 + widget.numberOfSpecies!);
     if(widget.numberOfSpecies == 9) {
       useHeads = (Random().nextInt(2) == 0);
     }
@@ -52,14 +53,14 @@ class _GameState extends State<Game> {
     disabled = List<bool>.filled(data.length * 2, false);
 
     // Após 2 segundos, todas as cartas são fechadas
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: widget.numberOfSpecies!), () {
       setState(() {
         opened = List<bool>.filled(data.length, true);
         showingInitialCards = false;
       });
     });
-
   }
+
 
   String getBirdImage(BirdSpecies bird, bool useHeads) {
     switch (widget.numberOfSpecies) {
@@ -99,7 +100,6 @@ class _GameState extends State<Game> {
         disabled = List<bool>.filled(data.length * 2, false);
         firstIndex = null;
         secondIndex = null;
-        timeLeft = Duration(minutes: 1);
         initializeGame();
         setupTimer();
         gameState = GameState.playing;
@@ -111,6 +111,7 @@ class _GameState extends State<Game> {
       return;
     }
 
+    // Impede a alteração do estado das cartas durante a exibição inicial
     if (showingInitialCards || gameState != GameState.playing || disabled[index]) {
       return;
     }
@@ -231,7 +232,11 @@ class _GameState extends State<Game> {
             title: gameState == GameState.playing 
               ? Text(
                 formatDuration(timeLeft),
-                style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: timeLeft.inSeconds > 120
+                    ? Colors.red
+                    : Colors.white, // Cor vermelha se o tempo for maior que 120 segundos
+              ),
               ) 
               : Text(
                 widget.title!,

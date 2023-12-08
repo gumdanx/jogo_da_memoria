@@ -1,4 +1,4 @@
-package com.example.jogo_da_memoria
+package com.gumdanx.jogo_da_memoria
 
 import io.flutter.embedding.android.FlutterActivity
 
